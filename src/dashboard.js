@@ -18,9 +18,9 @@ Telemetry.init(function(){
     var hgramEvo = data.histogram;
 
     if (hgramEvo !== null) {
-      update(hgramEvo);
       $("#content").fadeIn();
       $("#spinner").fadeOut();
+      update(hgramEvo);
     } else {
       $("#content").fadeOut();
       $("#spinner").fadeIn();
@@ -217,8 +217,8 @@ function update(hgramEvo) {
       }
     }, 100);
   }
-
-  nv.addGraph(function() {
+  var agrdata = [];
+  drawEvolution = function() {
     var maxSubmissions = 0;
 
     // Whether we actually filter submissions is controllable via the
@@ -303,6 +303,64 @@ function update(hgramEvo) {
       });
     }
 
+    // data: array of {key, yAxis, values}, where values are {x: date, y: value}
+    // labels: array of keys
+    // newdata: array of [date, value1, value2, ... ] for each key.
+    var labels = ["Date"];    
+    data.forEach(function(d) {
+	    labels.push(d.key);
+    });
+
+    var newdata = [];
+    // copy dates from first key
+    for (i = 0; i < data[0].values.length; ++i) {
+	newdata.push([data[0].values[i].x]);  // date
+    }
+    // append all values on that date
+    data.forEach(function(d) {
+        for (i = 0; i < d.values.length; ++i) {
+	    newdata[i].push(d.values[i].y);  // values
+	}
+    });
+	agrdata.push(newdata);
+	console.log("----agregated data", agrdata, "agregated length", agrdata.length );
+	
+
+    
+    var g = new Dygraph(document.getElementById("evolution"), newdata,
+                        {
+			  drawPoints: true,
+			  showRoller: false,
+			  labels: labels,
+			  series: {
+			      "Submissions": {
+				  axis: 'y2'
+			      },
+			  },
+			  axes: {
+			      x: {
+                        axisLabelFormatter: function(x) {
+                           var a = new Date(x);
+	var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var year = a.getFullYear();
+    console.log(year);                           
+    var month = months[a.getMonth()];
+    var date = a.getDate();
+    var hour = a.getHours();
+    var min = a.getMinutes();
+    var time = month;
+    return date + ' ' + month + ' ' + year;
+                           }
+			         },
+			      y2: {
+				  independentTicks: true
+			      }
+			  }
+
+		      });
+
+    /*
+
     var focusChart = evolutionchart()
       .margin({top: 10, right: 80, bottom: 40, left: 80});
 
@@ -334,7 +392,11 @@ function update(hgramEvo) {
     );
 
     focusChart.setSelectionChangeCallback(updateProps);
-  });
+
+    */
+  };
+
+  drawEvolution();
 
   updateProps();
 }
