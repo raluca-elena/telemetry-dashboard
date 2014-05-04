@@ -210,9 +210,6 @@ function update(hgramEvo) {
 
   $("#measure").text(hgramEvo.measure());
   $("#description").text(hgramEvo.description());
-
-  
-  var agrdata = [];
   
   //all the helper functions should be stored some other place if possible
   function getDateFormatted(date)
@@ -225,118 +222,159 @@ function update(hgramEvo) {
       return date + ' ' + month + ' ' + year;
   }
   
-  drawEvolution = function() {
-    var maxSubmissions = 0;
+  
+  function prepareData(hgramEvo)
+  {
+      var maxSubmissions = 0;
 
-    // Whether we actually filter submissions is controllable via the
-    // 'sanitize-pref' preference.
-    var sanitizeData = $('input[name=sanitize-pref]:checkbox').is(':checked');
+      // Whether we actually filter submissions is controllable via the
+      // 'sanitize-pref' preference.
+      var sanitizeData = $('input[name=sanitize-pref]:checkbox').is(':checked');
 
-    var submissions = hgramEvo.map(function(date, hgram) {
-      if (hgram.submissions() > maxSubmissions) {
-        maxSubmissions = hgram.submissions();
-      }
-
-      return {x: date.getTime(), y: hgram.submissions()};
-    });
-
-      data = [{
-      key:      "Submissions",
-      bar:      true, // This is hacked :)
-      yAxis:    2,
-      values:   submissions,
-    }];
-
-    // Don't crap up the percentiles / means with lines based on a tiny number
-    // of submissions. Flatten them all to zero if there are less than this
-    // many submissions.
-    // The cutoff is the lesser of 100 or 1% of the maximum number of
-    // submissions we saw.
-    var submissionsCutoff = Math.min(maxSubmissions / 100, 100);
-
-    if(hgramEvo.kind() == 'linear' || hgramEvo.kind() == 'exponential') {
-      var means = [];
-      // Percentile series
-      var ps = {};
-      [5, 25, 50, 75, 95].forEach(function(p) {
-        ps[p] = [];
-      });
-      hgramEvo.each(function(date, hgram) {
-        date = date.getTime();
-		
-		date = getDateFormatted(new Date(date));
-		
-        if (!sanitizeData || hgram.submissions() >= submissionsCutoff) {
-          var mean = hgram.mean();
-          if (mean >= 0) {
-            means.push({x: date, y: mean});
-          }
-          [5, 25, 50, 75, 95].forEach(function(p) {
-            var v = hgram.percentile(p);
-            // Weird negative values can cause d3 etc. to freak out - see Bug 984928 
-            if (v >= 0) {
-              ps[p].push({x: date, y: v});
-            }
-          });
-        } else {
-          // Set everything to zero to keep the graphs looking nice.
-          means.push({x: date, y: 0});
-          //means.push({x: getDateFormatted(date), y: 0});
-		  
-          [5, 25, 50, 75, 95].forEach(function(p) {
-            ps[p].push({x: date, y: 0});
-          });
+      var submissions = hgramEvo.map(function(date, hgram) {
+        if (hgram.submissions() > maxSubmissions) {
+          maxSubmissions = hgram.submissions();
         }
-      });
-      data.push({
-        key:      "Mean",
-        yAxis:    1,
-        values:   means,
-      },{
-        key:      "5th percentile",
-        yAxis:    1,
-        values:   ps['5'],
-      },{
-        key:      "25th percentile",
-        yAxis:    1,
-        values:   ps['25'],
-      },{
-        key:      "median",
-        yAxis:    1,
-        values:   ps['50'],
-      },{
-        key:      "75th percentile",
-        yAxis:    1,
-        values:   ps['75'],
-      },{
-        key:      "95th percentile",
-        yAxis:    1,
-        values:   ps['95'],
-      });
-    }
 
-    // data: array of {key, yAxis, values}, where values are {x: date, y: value}
-    // labels: array of keys
-    // newdata: array of [date, value1, value2, ... ] for each key.
-    labels = ["Date"]; 
-    //var labels = [];
-	data.forEach(function(d) {
-	    labels.push(d.key);
-    });
+        return {x: date.getTime(), y: hgram.submissions()};
+      });
 
-    var newdata = [];
-    // copy dates from first key
-    for (i = 0; i < data[0].values.length; ++i) {
-	newdata.push([data[0].values[i].x]);  // date
-    }
-    // append all values on that date
-    data.forEach(function(d) {
-        for (i = 0; i < d.values.length; ++i) {
-	    newdata[i].push(d.values[i].y);  // values
-	}
-    });
-	agrdata.push(newdata);
-	    
+        data = [{
+        key:      "Submissions",
+        bar:      true, // This is hacked :)
+        yAxis:    2,
+        values:   submissions,
+      }];
+
+      // Don't crap up the percentiles / means with lines based on a tiny number
+      // of submissions. Flatten them all to zero if there are less than this
+      // many submissions.
+      // The cutoff is the lesser of 100 or 1% of the maximum number of
+      // submissions we saw.
+      var submissionsCutoff = Math.min(maxSubmissions / 100, 100);
+
+      if(hgramEvo.kind() == 'linear' || hgramEvo.kind() == 'exponential') {
+        var means = [];
+        // Percentile series
+        var ps = {};
+        [5, 25, 50, 75, 95].forEach(function(p) {
+          ps[p] = [];
+        });
+        hgramEvo.each(function(date, hgram) 
+  	  {
+          date = date.getTime();
+  		date = getDateFormatted(new Date(date));
+		
+          if (!sanitizeData || hgram.submissions() >= submissionsCutoff) 
+  		{
+           	var mean = hgram.mean();
+            	if (mean >= 0) 
+  		  	{
+              	means.push({x: date, y: mean});
+            	}
+            	[5, 25, 50, 75, 95].forEach(function(p) 
+  			{
+              	var v = hgram.percentile(p);
+             	 	// Weird negative values can cause d3 etc. to freak out - see Bug 984928 
+              	if (v >= 0) 
+  				{
+                	  	ps[p].push({x: date, y: v});
+             	 	}
+            	});
+          } 
+  		else 
+  		{
+            // Set everything to zero to keep the graphs looking nice.
+          	means.push({x: date, y: 0});
+            	//means.push({x: getDateFormatted(date), y: 0});
+            	[5, 25, 50, 75, 95].forEach(function(p) 
+  			{
+              	ps[p].push({x: date, y: 0});
+            	});
+          }
+        });
+	  
+	  
+        data.push(
+  	  {
+          key:      "Mean",
+          yAxis:    1,
+          values:   means,
+        },
+  	  {
+          key:      "5th percentile",
+          yAxis:    1,
+          values:   ps['5'],
+        },
+  	  {
+          key:      "25th percentile",
+          yAxis:    1,
+          values:   ps['25'],
+        },
+  	  {
+          key:      "median",
+          yAxis:    1,
+          values:   ps['50'],
+        },
+  	  {
+          key:      "75th percentile",
+          yAxis:    1,
+          values:   ps['75'],
+        },
+  	  {
+          key:      "95th percentile",
+          yAxis:    1,
+          values:   ps['95'],
+        });
+      }
+	  
+      // data: array of {key, yAxis, values}, where values are {x: date, y: value}
+      // labels: array of keys
+      // newdata: array of [date, value1, value2, ... ] for each key.
+     
+
+    return data  
+	
+  }
+  data = prepareData(hgramEvo);
+  function constructLabels(data)
+  {
+      labels = ["Date"]; 
+      //var labels = [];
+  	  data.forEach(function(d) 
+	  {
+  	  		labels.push(d.key);
+      });
+	  return labels;
+  }
+  
+  labels = constructLabels(data);
+  
+  function modifyData(data)
+  {
+      var newdata = [];
+      // copy dates from first key
+      for (i = 0; i < data[0].values.length; ++i) 
+	  {
+  		  newdata.push([data[0].values[i].x]);  // date
+      }
+      // append all values on that date
+      data.forEach(function(d) 
+	  {
+          for (i = 0; i < d.values.length; ++i) 
+		  {
+  	    	  newdata[i].push(d.values[i].y);  // values
+  		  }
+      });
+	  return newdata;
+	
+  }
+  
+  
+  newdata = modifyData(data);
+  
+  drawEvolution = function(newData) {
+        
      g = new Dygraph(document.getElementById("evolution"), newdata,
               		{
 			  		  drawPoints: true,
