@@ -1,3 +1,6 @@
+var g;
+var data;
+var labels;
 Telemetry.init(function(){
   $("#histogram-filter").histogramfilter({
     synchronizeStateWithHash:   true,
@@ -108,12 +111,10 @@ function renderHistogramGraph(hgram) {
 
 
 var renderHistogramTime = null;
-
 var lastHistogramEvo = null;
-
-
 var _exportHgram = null;
 var _lastBlobUrl = null;
+
 // Generate download on mousedown
 $('#export-link').mousedown(function(){
   if(_lastBlobUrl){
@@ -218,6 +219,18 @@ function update(hgramEvo) {
     }, 100);
   }
   var agrdata = [];
+  
+  //all the helper functions should be stored some other place if possible
+  function getDateFormatted(date)
+  {
+  	var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      var year = date.getFullYear();
+      var month = months[date.getMonth()];
+      var date = date.getDate();
+      var time = month;
+      return date + ' ' + month + ' ' + year;
+  }
+  
   drawEvolution = function() {
     var maxSubmissions = 0;
 
@@ -233,7 +246,7 @@ function update(hgramEvo) {
       return {x: date.getTime(), y: hgram.submissions()};
     });
 
-    var data = [{
+      data = [{
       key:      "Submissions",
       bar:      true, // This is hacked :)
       yAxis:    2,
@@ -256,6 +269,9 @@ function update(hgramEvo) {
       });
       hgramEvo.each(function(date, hgram) {
         date = date.getTime();
+		
+		date = getDateFormatted(new Date(date));
+		
         if (!sanitizeData || hgram.submissions() >= submissionsCutoff) {
           var mean = hgram.mean();
           if (mean >= 0) {
@@ -271,6 +287,8 @@ function update(hgramEvo) {
         } else {
           // Set everything to zero to keep the graphs looking nice.
           means.push({x: date, y: 0});
+          //means.push({x: getDateFormatted(date), y: 0});
+		  
           [5, 25, 50, 75, 95].forEach(function(p) {
             ps[p].push({x: date, y: 0});
           });
@@ -306,8 +324,9 @@ function update(hgramEvo) {
     // data: array of {key, yAxis, values}, where values are {x: date, y: value}
     // labels: array of keys
     // newdata: array of [date, value1, value2, ... ] for each key.
-    var labels = ["Date"];    
-    data.forEach(function(d) {
+    labels = ["Date"]; 
+    //var labels = [];
+	data.forEach(function(d) {
 	    labels.push(d.key);
     });
 
@@ -323,80 +342,84 @@ function update(hgramEvo) {
 	}
     });
 	agrdata.push(newdata);
-	console.log("----agregated data", agrdata, "agregated length", agrdata.length );
-	
+	    
+     g = new Dygraph(document.getElementById("evolution"), newdata,
+              		{
+			  		  drawPoints: true,
+			  		  showRoller: false,
+			  		  labels:    labels,
+			          labelsDiv: document.getElementById("labels"),                     
+			          series:    {"Submissions": {axis: 'y2'},},
+			          axes: {x: {axisLabelFormatter: function(x) {return getDateFormatted(new Date(x));}},
+			                y2: {independentTicks: true}}
+					  	
+				    });
+	 
+	  
+	 
+		  function createCheckbox(name, nameofmeasure, chk) {
+		    $('<input/>', {
+		      id: name,
+		      type: 'Checkbox',
+			  checked:chk,
+		    }).appendTo('#measurement-selectors')
+			.change(function() { 				
+					change1(this);});
+		    $('<label/>', {
+		      for: name,
+		      text: nameofmeasure
+		    }).appendTo('#measurement-selectors');
+			
 
-    
-    var g = new Dygraph(document.getElementById("evolution"), newdata,
-                        {
-			  drawPoints: true,
-			  showRoller: false,
-			  labels: labels,
-			  series: {
-			      "Submissions": {
-				  axis: 'y2'
-			      },
-			  },
-			  axes: {
-			      x: {
-                        axisLabelFormatter: function(x) {
-                           var a = new Date(x);
-	var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    var year = a.getFullYear();
-    console.log(year);                           
-    var month = months[a.getMonth()];
-    var date = a.getDate();
-    var hour = a.getHours();
-    var min = a.getMinutes();
-    var time = month;
-    return date + ' ' + month + ' ' + year;
-                           }
-			         },
-			      y2: {
-				  independentTicks: true
-			      }
-			  }
+		  } 
+		  
+		  for (i = 1; i <labels.length; i++)
+		  {
+			  var id = "check"+i;
+			  createCheckbox(id, labels[i], true);				  
+		  }
+		  
+		  $('<button/>', {
+		          text: "checkAll", 
+		          id: 'checkAll',
+		          click: function () { bahaviorAppliedToAll(true);}
+		      }).appendTo('#measurement-selectors');
+		  
+		  $('<button/>', {
+			      text: "checkNone", 
+			      id: 'checkNone',
+			      click: function () { bahaviorAppliedToAll(false);}
+			  }).appendTo('#measurement-selectors');
+		  
+		  function bahaviorAppliedToAll(bool)
+		  {
+			  var i=0;
+			  $('#measurement-selectors').children('input').each(function () {
+			      this.checked=bool; 
+				  g.setVisibility(i,bool);
+				  i++;
+			  });
+		  }
+		  
+		  
 
-		      });
-
-    /*
-
-    var focusChart = evolutionchart()
-      .margin({top: 10, right: 80, bottom: 40, left: 80});
-
-    focusChart.xAxis
-      .tickFormat(function(d) {
-        return d3.time.format('%Y/%m/%d')(new Date(d));
-      });
-    focusChart.x2Axis
-      .tickFormat(function(d) {
-        return d3.time.format('%Y/%m/%d')(new Date(d));
-      });
-    focusChart.y1Axis
-        .tickFormat(fmt);
-    focusChart.y2Axis
-        .tickFormat(fmt);
-    focusChart.y3Axis
-        .tickFormat(fmt);
-    focusChart.y4Axis
-        .tickFormat(fmt);
-
-    d3.select("#evolution")
-      .datum(data)
-      .transition().duration(500).call(focusChart);
-
-    nv.utils.windowResize(
-      function() {
-        focusChart.update();
-      }
-    );
-
-    focusChart.setSelectionChangeCallback(updateProps);
-
-    */
   };
 
   drawEvolution();
 
   updateProps();
+}
+
+function change1(el) {
+	var i;
+	for (i = 1; i<= labels.length; i++)
+	{
+		if (el.id === ("check"+i)){
+			g.setVisibility(i-1, el.checked);
+			break;
+	    }
+	}
+	
+	
+	
 }
