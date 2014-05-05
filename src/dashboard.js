@@ -195,13 +195,15 @@ function updateProps(hgramEvo) {
 }
 //---
 
-
+var addedData = [];
+var allHistograms = [];
 
 function update(hgramEvo) {
   if(!hgramEvo) {
     hgramEvo = lastHistogramEvo;
   }
   lastHistogramEvo = hgramEvo;
+  allHistograms.push(hgramEvo);  
 
   // Add a show-<kind> class to #content
   $("#content").removeClass('show-linear show-exponential');
@@ -482,11 +484,11 @@ function update(hgramEvo) {
   ///////////////////////////
   
   drawEvolution = function(newData) {   
-     g = new Dygraph(document.getElementById("evolution"), newdata,
+     g = new Dygraph(document.getElementById("evolution"), acc,
                {
 				   drawPoints: true,
 				   showRoller: false,
-				   labels: labels,
+				   labels: allLabels,
 				   labelsDiv: document.getElementById("labels"),
 				   series: {"Submissions": {axis: 'y2'},},
 				   axes: {x: {axisLabelFormatter: function(x) {return getDateFormatted(new Date(x));}},
