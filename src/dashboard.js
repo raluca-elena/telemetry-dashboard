@@ -372,79 +372,113 @@ function update(hgramEvo) {
   newdata = modifyData(data);
   ///////////////////////////
   var datas = [];
-  console.log("datas length ", datas.length);
-  function constructLabels1(datas)
+  function constructLabels1(oldFormatDates)
   {
 	  var i;
 	  var j;
 	  var allLabels = ["Date"];
-	  for (i = 0; i < datas.length; i++)
-	  {
-		  for (j=0; j < datas[i].length; j++)
-			allLabels.push(datas[i][j]);
+	  var allLabels = [];
+	  	  for (i = 0; i < oldFormatDates.length; i++)
+	  {	  
+		  var x = constructLabels(oldFormatDates[i]);		  
+		  allLabels = allLabels.concat(x);		  
 	  }
-	  console.log("--------------", allLabels);
+	  var j;
+	  for(j = 1; j < allLabels.length; j++)
+	  {
+		console.log("allLabels[i] is:", allLabels[j]);
+		if(allLabels[j]=="Date")
+		{
+			allLabels.splice(j, 1);
+		}
+		}	  
 	  return allLabels;
   }
-  datas.push(data);
-  datas.push(data);
-  var allLabels = constructLabels1( datas);
-  //-------------construct agregate data
+  //------
+  var oldFormatDates = [];
+  oldFormatDates.push(data);
+  oldFormatDates.push(data);
+  var allLabels = constructLabels1(oldFormatDates);  
+  datas.push(newdata);
+  datas.push(newdata);
+   //-------------construct agregate data from newdata
   function agregateDates(datas)
   {
 	  ////mimic a set
-	  var mySet = {};
+	  var setOfDates = {};
 	  var i;
 	  var j;
 	  for (i = 0; i < datas.length; i++)
 	  {
 		  for (j = 0; j < datas[i].length; j++)
 		  {
-			  if (datas[i][j][0] in mySet)
-			  	continue;
+			  if (datas[i][j][0] in setOfDates)
+			  {
+				  //console.log("i am in if and datas[i][j][0] is ", datas[i][j][0]);
+				  continue;
+			  }
 			  else
-			  	mySet[datas[i][j][0]] = true;
+			  	setOfDates[datas[i][j][0]] = true;
 		  }
 	  }
-	  return mySet;
-	  
+	  //setOfDates is a dict having entries unit_time:true
+	  return setOfDates;  
   }
   //all the dates are in setOfDates date:true
-  //level is the set of data in datas
+  //level is number of the set of data in datas
   //datas is the list of datas
   //dict is of data: label1, labes2...
-  function agregOneStepData(datas,level, setOfDates, dict)
+  function headerList(setOfDates)
   {
-	  for(var key in dict)
+	  var i;
+	  var dict = [];
+	  for(var key in setOfDates)
+	  	dict.push([key]);
+	  return dict;
+  }
+  setOfDates = agregateDates(datas);
+  console.log("-----set of dates -----", setOfDates);
+  var acc = headerList(setOfDates);
+  console.log("the acc is    ", acc);
+  
+  function agregOneStepData(datas,level, setOfDates, acc)
+  {
+	  var j;
+	  for(j=0; j < acc.length; j++)
 	  {
 		  var i;
 		  var hasData = false;
 		  for(i = 0; i < datas[level].length; i++)
 		  {
-			  if (datas[level][i][0] == key)
+			  if (datas[level][i][0] == acc[j][0])
 			  {
-			  	dict[key].concat(datas[level][i].splice(0, 1));
-			  	hasData = true;
-				break;
+				  var y = datas[level][i].slice(1);
+				  console.log("------datas[level][i].slice(0, 1)", y);
+				  console.log("acc inainte", acc[j]);
+				  acc[j] = acc[j].concat(y);
+				  console.log("acc dupa", acc[j]);
+			  	  hasData = true;
+				  break;
 			  }
 		  }
 		  if (hasData == false)
 		  {
 			  
 			  var i;
-			  for(i = 0; i < datas[level][1].length; i++)
-				  dict[key].concat(null);
+			  for(i = 0; i < datas[level][1].length-1; i++)
+				  acc[j] = acc[j].concat(null);
 		   }
 	  }
-	  return dict;
+	  console.log("acc is -------  ", acc);
+	  return acc;
   }
-  setOfDates = agregateDates(datas);
+  console.log("my set of dates looks like------", setOfDates);
   var i;
-  var dict;
   for(i = 0; i < datas.length; i++)
-  		agregOneStepData(datas, i, setOfDates, dict);
-		console.log("my dict looks like--------", dict);
-  
+  {
+  		var y = agregOneStepData(datas, i, setOfDates, acc);
+  	  	console.log("y is %%%%%%%%%%%%%%", y);
+	}
   ///////////////////////////
   
   drawEvolution = function(newData) {   
