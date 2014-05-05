@@ -3,16 +3,16 @@ var data;
 var labels;
 Telemetry.init(function(){
   $("#histogram-filter").histogramfilter({
-    synchronizeStateWithHash:   true,
-    defaultVersion:             function(versions) {
+    synchronizeStateWithHash: true,
+    defaultVersion: function(versions) {
       var nightlies = versions.filter(function(version) {
         return version.substr(0,8) == "nightly/";
       });
       nightlies.sort();
       return nightlies.pop() || versions.sort().pop();
     },
-    selectorType:   BootstrapSelector,
-    evolutionOver:  $('input[name=evo-type]:radio:checked').val(),
+    selectorType: BootstrapSelector,
+    evolutionOver: $('input[name=evo-type]:radio:checked').val(),
   });
 
   $("#histogram-filter").bind("histogramfilterchange", function(event, data) {
@@ -86,9 +86,9 @@ function renderHistogramGraph(hgram) {
     });
 
     var data = [{
-      key:      "Count",
-      values:   vals,
-      color:    "#0000ff"
+      key: "Count",
+      values: vals,
+      color: "#0000ff"
     }];
 
     var chart = histogramchart()
@@ -150,10 +150,10 @@ function updateProps(hgramEvo) {
   }
 
   // Set common properties
-  $('#prop-kind')       .text(hgram.kind());
+  $('#prop-kind') .text(hgram.kind());
   $('#prop-submissions').text(fmt(hgram.submissions()));
-  $('#prop-count')      .text(fmt(hgram.count()));
-  $('#prop-dates')      .text(d3.format('s')(dates.length));
+  $('#prop-count') .text(fmt(hgram.count()));
+  $('#prop-dates') .text(d3.format('s')(dates.length));
   $('#prop-date-range') .text(dateRange);
 
   // Set linear only properties
@@ -214,7 +214,7 @@ function update(hgramEvo) {
   //all the helper functions should be stored some other place if possible
   function getDateFormatted(date)
   {
-  	var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+   var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
       var year = date.getFullYear();
       var month = months[date.getMonth()];
       var date = date.getDate();
@@ -240,10 +240,10 @@ function update(hgramEvo) {
       });
 
         data = [{
-        key:      "Submissions",
-        bar:      true, // This is hacked :)
-        yAxis:    2,
-        values:   submissions,
+        key: "Submissions",
+        bar: true, // This is hacked :)
+        yAxis: 2,
+        values: submissions,
       }];
 
       // Don't crap up the percentiles / means with lines based on a tiny number
@@ -260,92 +260,92 @@ function update(hgramEvo) {
         [5, 25, 50, 75, 95].forEach(function(p) {
           ps[p] = [];
         });
-        hgramEvo.each(function(date, hgram) 
-  	  {
+        hgramEvo.each(function(date, hgram)
+   {
           date = date.getTime();
-  		date = getDateFormatted(new Date(date));
-		
-          if (!sanitizeData || hgram.submissions() >= submissionsCutoff) 
-  		{
-           	var mean = hgram.mean();
-            	if (mean >= 0) 
-  		  	{
-              	means.push({x: date, y: mean});
-            	}
-            	[5, 25, 50, 75, 95].forEach(function(p) 
-  			{
-              	var v = hgram.percentile(p);
-             	 	// Weird negative values can cause d3 etc. to freak out - see Bug 984928 
-              	if (v >= 0) 
-  				{
-                	  	ps[p].push({x: date, y: v});
-             	 	}
-            	});
-          } 
-  		else 
-  		{
+   date = getDateFormatted(new Date(date));
+
+   if (!sanitizeData || hgram.submissions() >= submissionsCutoff)
+   {
+   		var mean = hgram.mean();
+        if (mean >= 0)
+   		{
+             means.push({x: date, y: mean});
+        }
+        [5, 25, 50, 75, 95].forEach(function(p)
+   		{
+        	var v = hgram.percentile(p);
+            // Weird negative values can cause d3 etc. to freak out - see Bug 984928
+            if (v >= 0)
+   			{
+            	ps[p].push({x: date, y: v});
+            }
+         });
+   }
+   else
+   {
             // Set everything to zero to keep the graphs looking nice.
-          	means.push({x: date, y: 0});
-            	//means.push({x: getDateFormatted(date), y: 0});
-            	[5, 25, 50, 75, 95].forEach(function(p) 
-  			{
-              	ps[p].push({x: date, y: 0});
-            	});
+           means.push({x: date, y: 0});
+             //means.push({x: getDateFormatted(date), y: 0});
+             [5, 25, 50, 75, 95].forEach(function(p)
+   {
+               ps[p].push({x: date, y: 0});
+             });
           }
         });
-	  
-	  
+
+
         data.push(
-  	  {
-          key:      "Mean",
-          yAxis:    1,
-          values:   means,
+   {
+          key: "Mean",
+          yAxis: 1,
+          values: means,
         },
-  	  {
-          key:      "5th percentile",
-          yAxis:    1,
-          values:   ps['5'],
+   {
+          key: "5th percentile",
+          yAxis: 1,
+          values: ps['5'],
         },
-  	  {
-          key:      "25th percentile",
-          yAxis:    1,
-          values:   ps['25'],
+   {
+          key: "25th percentile",
+          yAxis: 1,
+          values: ps['25'],
         },
-  	  {
-          key:      "median",
-          yAxis:    1,
-          values:   ps['50'],
+   {
+          key: "median",
+          yAxis: 1,
+          values: ps['50'],
         },
-  	  {
-          key:      "75th percentile",
-          yAxis:    1,
-          values:   ps['75'],
+   {
+          key: "75th percentile",
+          yAxis: 1,
+          values: ps['75'],
         },
-  	  {
-          key:      "95th percentile",
-          yAxis:    1,
-          values:   ps['95'],
+   {
+          key: "95th percentile",
+          yAxis: 1,
+          values: ps['95'],
         });
       }
-	  
+
       // data: array of {key, yAxis, values}, where values are {x: date, y: value}
       // labels: array of keys
       // newdata: array of [date, value1, value2, ... ] for each key.
      
 
-    return data  
-	
+    return data
+
   }
   data = prepareData(hgramEvo);
   function constructLabels(data)
   {
-      labels = ["Date"]; 
+   		labels = ["Date"];
       //var labels = [];
-  	  data.forEach(function(d) 
-	  {
-  	  		labels.push(d.key);
-      });
-	  return labels;
+   		data.forEach(function(d)
+		{
+   		 	labels.push(d.key);
+      	});
+		return labels;
   }
   
   labels = constructLabels(data);
@@ -354,104 +354,163 @@ function update(hgramEvo) {
   {
       var newdata = [];
       // copy dates from first key
-      for (i = 0; i < data[0].values.length; ++i) 
+      for (i = 0; i < data[0].values.length; ++i)
 	  {
-  		  newdata.push([data[0].values[i].x]);  // date
+   	   		newdata.push([data[0].values[i].x]); // date
       }
       // append all values on that date
-      data.forEach(function(d) 
+      data.forEach(function(d)
 	  {
-          for (i = 0; i < d.values.length; ++i) 
+          for (i = 0; i < d.values.length; ++i)
 		  {
-  	    	  newdata[i].push(d.values[i].y);  // values
+   		   		newdata[i].push(d.values[i].y); // values
   		  }
       });
 	  return newdata;
-	
+
   }
-  
-  
   newdata = modifyData(data);
-  
-  drawEvolution = function(newData) {
-        
-     g = new Dygraph(document.getElementById("evolution"), newdata,
-              		{
-			  		  drawPoints: true,
-			  		  showRoller: false,
-			  		  labels:    labels,
-			          labelsDiv: document.getElementById("labels"),                     
-			          series:    {"Submissions": {axis: 'y2'},},
-			          axes: {x: {axisLabelFormatter: function(x) {return getDateFormatted(new Date(x));}},
-			                y2: {independentTicks: true}}
-					  	
-				    });
-	 
+  ///////////////////////////
+  var datas = [];
+  console.log("datas length ", datas.length);
+  function constructLabels1(datas)
+  {
+	  var i;
+	  var j;
+	  var allLabels = ["Date"];
+	  for (i = 0; i < datas.length; i++)
+	  {
+		  for (j=0; j < datas[i].length; j++)
+			allLabels.push(datas[i][j]);
+	  }
+	  console.log("--------------", allLabels);
+	  return allLabels;
+  }
+  datas.push(data);
+  datas.push(data);
+  var allLabels = constructLabels1( datas);
+  //-------------construct agregate data
+  function agregateDates(datas)
+  {
+	  ////mimic a set
+	  var mySet = {};
+	  var i;
+	  var j;
+	  for (i = 0; i < datas.length; i++)
+	  {
+		  for (j = 0; j < datas[i].length; j++)
+		  {
+			  if (datas[i][j][0] in mySet)
+			  	continue;
+			  else
+			  	mySet[datas[i][j][0]] = true;
+		  }
+	  }
+	  return mySet;
 	  
-	 
-		  function createCheckbox(name, nameofmeasure, chk) {
-		    $('<input/>', {
-		      id: name,
-		      type: 'Checkbox',
-			  checked:chk,
-		    }).appendTo('#measurement-selectors')
-			.change(function() { 				
-					change1(this);});
-		    $('<label/>', {
-		      for: name,
-		      text: nameofmeasure
-		    }).appendTo('#measurement-selectors');
-			
-
-		  } 
-		  
-		  for (i = 1; i <labels.length; i++)
+  }
+  //all the dates are in setOfDates date:true
+  //level is the set of data in datas
+  //datas is the list of datas
+  //dict is of data: label1, labes2...
+  function agregOneStepData(datas,level, setOfDates, dict)
+  {
+	  for(var key in dict)
+	  {
+		  var i;
+		  var hasData = false;
+		  for(i = 0; i < datas[level].length; i++)
 		  {
-			  var id = "check"+i;
-			  createCheckbox(id, labels[i], true);				  
+			  if (datas[level][i][0] == key)
+			  {
+			  	dict[key].concat(datas[level][i].splice(0, 1));
+			  	hasData = true;
+				break;
+			  }
 		  }
-		  
-		  $('<button/>', {
-		          text: "checkAll", 
-		          id: 'checkAll',
-		          click: function () { bahaviorAppliedToAll(true);}
-		      }).appendTo('#measurement-selectors');
-		  
-		  $('<button/>', {
-			      text: "checkNone", 
-			      id: 'checkNone',
-			      click: function () { bahaviorAppliedToAll(false);}
-			  }).appendTo('#measurement-selectors');
-		  
-		  function bahaviorAppliedToAll(bool)
+		  if (hasData == false)
 		  {
-			  var i=0;
-			  $('#measurement-selectors').children('input').each(function () {
-			      this.checked=bool; 
-				  g.setVisibility(i,bool);
-				  i++;
-			  });
-		  }
-		  
-		  
+			  
+			  var i;
+			  for(i = 0; i < datas[level][1].length; i++)
+				  dict[key].concat(null);
+		   }
+	  }
+	  return dict;
+  }
+  setOfDates = agregateDates(datas);
+  var i;
+  var dict;
+  for(i = 0; i < datas.length; i++)
+  		agregOneStepData(datas, i, setOfDates, dict);
+		console.log("my dict looks like--------", dict);
+  
+  ///////////////////////////
+  
+  drawEvolution = function(newData) {   
+     g = new Dygraph(document.getElementById("evolution"), newdata,
+               {
+				   drawPoints: true,
+				   showRoller: false,
+				   labels: labels,
+				   labelsDiv: document.getElementById("labels"),
+				   series: {"Submissions": {axis: 'y2'},},
+				   axes: {x: {axisLabelFormatter: function(x) {return getDateFormatted(new Date(x));}},
+				   y2: {independentTicks: true}}
 
+			   	});
+	function createCheckbox(name, nameofmeasure, chk) 
+	{
+					$('<input/>', {id: name,
+								 type: 'Checkbox',
+							  checked: chk,}).appendTo('#measurement-selectors').change(function() {change1(this);});
+				    $('<label/>', {for: name,
+								  text: nameofmeasure}).appendTo('#measurement-selectors');
+	 }
+
+    for (i = 1; i <labels.length; i++)
+    {
+	   var id = "check"+i;
+	   createCheckbox(id, labels[i], true);	
+    }
+
+    $('<button/>', {
+    text: "checkAll",
+    id: 'checkAll',
+    click: function () { bahaviorAppliedToAll(true);}
+    }).appendTo('#measurement-selectors');
+
+    $('<button/>', {
+    text: "checkNone",
+    id: 'checkNone',
+    click: function () { bahaviorAppliedToAll(false);}
+    }).appendTo('#measurement-selectors');
+
+	function bahaviorAppliedToAll(bool)
+	{
+		var i=0;
+		$('#measurement-selectors').children('input').each(function () {
+			this.checked=bool;
+			g.setVisibility(i,bool);
+			i++;
+		});
+	}
   };
 
-  drawEvolution();
-
-  updateProps(hgramEvo);
+ drawEvolution();
+ updateProps(hgramEvo);
 }
 
 function change1(el) {
-	var i;
-	for (i = 1; i<= labels.length; i++)
-	{
-		if (el.id === ("check"+i)){
-			g.setVisibility(i-1, el.checked);
-			break;
-	    }
-	}
-	
-	
-	
+var i;
+for (i = 1; i<= labels.length; i++)
+{
+if (el.id === ("check"+i)){
+g.setVisibility(i-1, el.checked);
+break;
+}
+}
+
+
+
 }
