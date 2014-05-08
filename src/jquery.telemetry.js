@@ -478,22 +478,23 @@ $.widget("telemetry.histogramfilter", {
   },
 
   /** Attempt to restore version with measures and filter fragments */
-  _restoreVersion: function histogramfilter__restoreVersion(versionS, measure,
+  _restoreVersion: function histogramfilter__restoreVersion(versions, measure,
                                                             fragments) {
     // Validate selected version
-	var version = versionS[0];
     var allVersions = Telemetry.versions();
-    if (allVersions.indexOf(version) === -1) {
-      version = this._defaultVersion(allVersions);
+    if (allVersions.indexOf(versions[0]) === -1) {
+      versions = [this._defaultVersion(allVersions)];
     }
 
     // Select version, but ignore this change in event handlers
     this._ignoreChanges = true;
-    this._versionSelector.val([version]);
+    this._versionSelector.val(versions);
     this._ignoreChanges = false;
 
     // Report that we're loading
     this._triggerChange();
+
+	var version = versions[0];
 
     // Load measures for selected version
     Telemetry.measures(version, $.proxy(function(measures) {
