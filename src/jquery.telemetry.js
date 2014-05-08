@@ -155,7 +155,7 @@ function _versionSelectorType() {
 		/** Get/set selected value */
 		val: function DefaultSelector_value(value) {
 			if (value !== undefined) {
-				this._select.val([value]);
+				this._select.val(value);
 			}
 			return this._select.val()[0];
 		},
@@ -488,7 +488,7 @@ $.widget("telemetry.histogramfilter", {
 
     // Select version, but ignore this change in event handlers
     this._ignoreChanges = true;
-    this._versionSelector.val(version);
+    this._versionSelector.val([version]);
     this._ignoreChanges = false;
 
     // Report that we're loading
