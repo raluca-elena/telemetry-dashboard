@@ -11,7 +11,7 @@ Telemetry.init(function(){
       nightlies.sort();
       return nightlies.pop() || versions.sort().pop();
     },
-    versionSelectorType: BootstrapSelector,
+    //versionSelectorType: BootstrapSelector,
     defaultSelectorType: BootstrapSelector,
 	
     evolutionOver: $('input[name=evo-type]:radio:checked').val(),

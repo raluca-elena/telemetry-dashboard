@@ -98,7 +98,89 @@ function _defaultSelectorType() {
 
 	return DefaultSelector;
 }
+//
+function _versionSelectorType() {
+	/**
+	* Construct a selector given a filter name, valid filter names are:
+	*  - 'version', 'measure', 'reason', 'appName', 'OS', 'osVersion', 'arch'
+	*  Default option, if supported, is filterName + '*'
+	*/
+	function DefaultSelector(filterName) {
+		this._filterName = filterName;
+		this._select = $("<select multiple>");
+		this._options = [];
+		this._select.bind("change", $.proxy(function() {
+			if (this._callback !== undefined) {
+				this._callback(this, this.val());
+			}
+		}, this));
+	}
 
+	// Methods for selector strategy
+	$.extend(DefaultSelector.prototype, {
+		/** Returns a jQuery wrapper for the underlying DOM element */
+		element: function DefaultSelector_element() {
+			return this._select;
+		},
+
+		/** Get/set selectable options */
+		options: function DefaultSelector_options(options) {
+			if (options !== undefined) {
+				// Clear existing options
+				this._select.empty();
+
+				var n = options.length;
+				for(var i = 0; i < n; i++) {
+					var option = options[i];
+
+					var label = option;
+					// Special label if we're displaying versions
+					if (this._filterName === "version") {
+						label = option.replace("/", " ");
+					}
+
+					// Add <option>
+					this._select.append($("<option>", {
+						text:       label,
+						value:      option
+					}));
+				}
+
+				// Store options for another time
+				this._options = options;
+			}
+			return this._options;
+		},
+
+		/** Get/set selected value */
+		val: function DefaultSelector_value(value) {
+			if (value !== undefined) {
+				this._select.val([value]);
+			}
+			return this._select.val()[0];
+		},
+
+		/**
+		* Set change callback, only one callback supported, invocation without
+		* the callback argument unbinds previous callback. The callback is
+		* invoked as: callback(this, selectedValue)
+		*/
+		change: function DefaultSelector_change(callback) {
+			this._callback = callback;
+		},
+
+		/** Clean up, after element() being detached */
+		destroy: function DefaultSelector_remove() {
+			this._callback = null;
+			this._options = null;
+			this._select.remove();
+		}
+	});
+
+	return DefaultSelector;
+}
+
+//
 /**
  * Telemetry histogramfilter widget, a simple widget that manages the <select>
  * elements to filter a histogram. Whenever, the selected filters are changed
@@ -186,7 +268,7 @@ $.widget("telemetry.histogramfilter", {
      *  - 'version', 'measure', 'reason', 'appName', 'OS', 'osVersion', 'arch'
      */
 	defaultSelectorType: _defaultSelectorType(),
-    versionSelectorType: _defaultSelectorType(),
+    versionSelectorType: _versionSelectorType(),
   },
 
   /** Create new histogramfilter */
