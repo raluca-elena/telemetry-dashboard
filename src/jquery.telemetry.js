@@ -157,7 +157,7 @@ function _versionSelectorType() {
 			if (value !== undefined) {
 				this._select.val(value);
 			}
-			return this._select.val()[0];
+			return this._select.val();
 		},
 
 		/**
@@ -499,7 +499,7 @@ $.widget("telemetry.histogramfilter", {
     // Load measures for selected version
     Telemetry.measures(version, $.proxy(function(measures) {
       // Abort if another version have been selected while we loaded
-      if (this._versionSelector.val() !== version) {
+      if (this._versionSelector.val()[0] !== version) {
         return;
       }
 
@@ -539,20 +539,23 @@ $.widget("telemetry.histogramfilter", {
     this._ignoreChanges = false;
 
     // Get version to load histogram for
-    var version = this._versionSelector.val();
+    var versions = this._versionSelector.val();
 
     // Report that we're loading
     this._triggerChange();
 
     // Load histogram for desired measure
     var loader = "loadEvolutionOver" + this.options.evolutionOver;
-    Telemetry[loader](version, measure, $.proxy(function(hgram) {
+    Telemetry[loader](versions[0], measure, $.proxy(function(hgram) {
       // Abort if another version or measure have been selected while we loaded
-      if (this._versionSelector.val() !== version ||
-          this._measureSelector.val() !== measure) {
-        return;
-      }
 
+	  /*
+	  TODO: raluca: can't compare arrays with === _versionSelector.val with versions.
+	  if (this._versionSelector.val() !== versions ||
+          this._measureSelector.val() !== measure) {
+         return;
+      }
+*/
       // Clear filters just to be safe
       this._clearFilterList();
 
@@ -678,7 +681,7 @@ $.widget("telemetry.histogramfilter", {
     }
 
     // Get selected version
-    var version = this._versionSelector.val();
+    var versions = this._versionSelector.val();
     
     // Get selected measure, so we can restore it
     var measure = this._measureSelector.val();
@@ -695,7 +698,7 @@ $.widget("telemetry.histogramfilter", {
 
     // Now restore version, measure and cleared filters as desired
     // this will also trigger a changed event, so that's it
-    this._restoreVersion([version], measure, clearedFilters);
+    this._restoreVersion(versions, measure, clearedFilters);
   },
 
   /** Selected measure changed event handler */
@@ -803,7 +806,7 @@ $.widget("telemetry.histogramfilter", {
   _triggerChange: function histogramfilter__triggerChange() {
     // Version should be channel/version, and we wish to treat this as two
     // fragments with respect to serialization
-    var fragments = this._versionSelector.val().split("/");
+    var fragments = this._versionSelector.val()[0].split("/");
     if (fragments.length != 2) {
       // We need the version to be on format <channel>/<version> this is fairly
       // stupid, and we might accidentally break this in the future, but there
