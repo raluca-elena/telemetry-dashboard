@@ -339,7 +339,7 @@ $.widget("telemetry.histogramfilter", {
       var measure = fragments.shift();
 
       // Restore version, etc. and trigger an change event
-      this._restoreVersion(version, measure, fragments);
+      this._restoreVersion([version], measure, fragments);
     }
     return this.options.state;
   },
@@ -478,12 +478,13 @@ $.widget("telemetry.histogramfilter", {
   },
 
   /** Attempt to restore version with measures and filter fragments */
-  _restoreVersion: function histogramfilter__restoreVersion(version, measure,
+  _restoreVersion: function histogramfilter__restoreVersion(versionS, measure,
                                                             fragments) {
     // Validate selected version
-    var versions = Telemetry.versions();
-    if (versions.indexOf(version) === -1) {
-      version = this._defaultVersion(versions);
+	var version = versionS[0];
+    var allVersions = Telemetry.versions();
+    if (allVersions.indexOf(version) === -1) {
+      version = this._defaultVersion(allVersions);
     }
 
     // Select version, but ignore this change in event handlers
@@ -693,7 +694,7 @@ $.widget("telemetry.histogramfilter", {
 
     // Now restore version, measure and cleared filters as desired
     // this will also trigger a changed event, so that's it
-    this._restoreVersion(version, measure, clearedFilters);
+    this._restoreVersion([version], measure, clearedFilters);
   },
 
   /** Selected measure changed event handler */
