@@ -441,9 +441,9 @@ function update(hgramEvo) {
 	  return dict;
   }
   setOfDates = agregateDates(datas);
-  console.log("-----set of dates -----", setOfDates);
+  //console.log("-----set of dates -----", setOfDates);
   var acc = headerList(setOfDates);
-  console.log("the acc is    ", acc);
+  //console.log("the acc is    ", acc);
   
   function agregOneStepData(datas,level, setOfDates, acc)
   {
@@ -457,10 +457,10 @@ function update(hgramEvo) {
 			  if (datas[level][i][0] == acc[j][0])
 			  {
 				  var y = datas[level][i].slice(1);
-				  console.log("------datas[level][i].slice(0, 1)", y);
-				  console.log("acc inainte", acc[j]);
+				  //console.log("------datas[level][i].slice(0, 1)", y);
+				  //console.log("acc inainte", acc[j]);
 				  acc[j] = acc[j].concat(y);
-				  console.log("acc dupa", acc[j]);
+				  //console.log("acc dupa", acc[j]);
 			  	  hasData = true;
 				  break;
 			  }
@@ -473,15 +473,15 @@ function update(hgramEvo) {
 				  acc[j] = acc[j].concat(null);
 		   }
 	  }
-	  console.log("acc is -------  ", acc);
+	  //console.log("acc is -------  ", acc);
 	  return acc;
   }
-  console.log("my set of dates looks like------", setOfDates);
+  //console.log("my set of dates looks like------", setOfDates);
   var i;
   for(i = 0; i < datas.length; i++)
   {
   		var y = agregOneStepData(datas, i, setOfDates, acc);
-  	  	console.log("y is %%%%%%%%%%%%%%", y);
+  	  	//console.log("y is %%%%%%%%%%%%%%", y);
 	}
   ///////////////////////////
   
