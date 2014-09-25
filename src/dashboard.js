@@ -762,6 +762,21 @@ function renderHistogramTable(hgram) {
 }
 
 function renderHistogramGraph(hgram) {
+
+  console.log("datele care intra in histograma veche :" , hgram);
+  var HG = [];
+  for (var i = 0; i < hgram._buckets.length; i++) {
+    console.log("^^^^^^^qqqqqqqqqqqqqqq", hgram._buckets[i]);
+    HG.push({'x' : hgram._buckets[i], 'val' : hgram._aggregated[i]});
+  }
+  console.log("***************datele care intra in histograma noua", HG);
+  console.log("HISTOGRAM TYPE -------------------", hgram._spec.kind);
+
+  //if histogram is exponential, use log scale
+  var y_scale_type = (hgram._spec.kind == 'exponential')
+    ? 'log'
+    : 'linear';
+
   $('#histogram-table').hide();
   $('#histogram').hide();
 
@@ -776,7 +791,7 @@ function renderHistogramGraph(hgram) {
     $('#histogram').show();
   }
 
-  nv.addGraph(function () {
+  /*nv.addGraph(function () {
     var total = hgram.count();
     var vals = hgram.map(function (count, start, end, index) {
       return {
@@ -810,6 +825,40 @@ function renderHistogramGraph(hgram) {
       }
     );
     return chart;
+  });*/
+
+  var xax_count = (hgram._spec.kind == 'flag' || hgram._spec.kind == 'boolean')
+    ? 2
+    : 10;
+
+  moz_chart({
+    title: "Histogram of type: " + hgram._spec.kind,
+    description: "This is a simple line chart. You can remove the area portion by adding area: false to the arguments list.",
+    data: HG,
+    chart_type: 'histogram',
+    width: 1050,
+    height: 389,
+    left:40,
+    y_scale_type: y_scale_type,
+    target: '#histogram',
+    y_extended_ticks: true,
+    xax_count: xax_count,
+    xax_tick: 5,
+    bar_margin: 1,
+    //right: 100,
+    //left:100,
+    binned: true,
+    rollover_callback: function(d, i) {
+      $('#histogram svg .active_datapoint')
+        .html('Value: ' + d3.round(d.x,2) + ' Count: ' + d.y);
+    },
+    x_accessor: 'x',
+    y_accessor: 'val',
+    area:false,
+    //buffer: 10,
+
+    //markers: release_markers
+
   });
 }
 
