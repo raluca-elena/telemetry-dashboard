@@ -767,7 +767,9 @@ function renderHistogramGraph(hgram) {
   var HG = [];
   for (var i = 0; i < hgram._buckets.length; i++) {
     console.log("^^^^^^^qqqqqqqqqqqqqqq", hgram._buckets[i]);
-    HG.push({'x' : hgram._buckets[i], 'val' : hgram._aggregated[i]});
+    //HG.push({'x' : hgram._buckets[i], 'val' : hgram._aggregated[i]});
+    HG.push({'x' : i, 'val' : hgram._aggregated[i]});
+
   }
   console.log("***************datele care intra in histograma noua", HG);
   console.log("HISTOGRAM TYPE -------------------", hgram._spec.kind);
@@ -836,7 +838,7 @@ function renderHistogramGraph(hgram) {
     description: "This is a simple line chart. You can remove the area portion by adding area: false to the arguments list.",
     data: HG,
     chart_type: 'histogram',
-    width: 1050,
+    width: 1000,
     height: 389,
     left:40,
     y_scale_type: y_scale_type,
@@ -845,12 +847,14 @@ function renderHistogramGraph(hgram) {
     xax_count: xax_count,
     xax_tick: 5,
     bar_margin: 1,
-    //right: 100,
-    //left:100,
+    right: 200,
+    left:100,
     binned: true,
     rollover_callback: function(d, i) {
       $('#histogram svg .active_datapoint')
-        .html('Value: ' + d3.round(d.x,2) + ' Count: ' + d.y);
+        //.html('bucket: ' + d3.round(d.x,2) + ' Hits: ' + d.y);
+        .html('bucket: ' + hgram._buckets[i] + ' Hits: ' + d.y);
+
     },
     x_accessor: 'x',
     y_accessor: 'val',
