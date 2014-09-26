@@ -853,7 +853,7 @@ function renderHistogramGraph(hgram) {
     rollover_callback: function(d, i) {
       $('#histogram svg .active_datapoint')
         //.html('bucket: ' + d3.round(d.x,2) + ' Hits: ' + d.y);
-        .html('bucket: ' + hgram._buckets[i] + 'no of hits: ' + d.y);
+        .html('bucket: ' + hgram._buckets[i] + ' nr of hits: ' + d.y);
 
     },
     x_accessor: 'x',
