@@ -5,7 +5,7 @@
     <title>Telemetry Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap, Awesome Font, nvd3 and Bootstrap-Select -->
-    <link rel="stylesheet"
+     <link rel="stylesheet"
           href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet"
           href="//netdna.bootstrapcdn.com/font-awesome/4.0.2/css/font-awesome.min.css">
@@ -49,28 +49,41 @@
         </form>
     </nav>
     <section style="margin: 0px auto; width: 100%;" class="container">
+        <div>
         <div id="content" class="row">
             <div class="col-md-8">
-                <div>
+                <!--<div>-->
                     <h2 id="measure">Measure</h2>
                     <i id="description">Description</i>
+                    <div class="col-md-6">
                     <figure style="margin: 15px;"><svg id="evolution"></svg></figure>
-                    <figure>
-                        <svg id="histogram" class="single-histogram-only"></svg>
+                    </div>
+                    <div class="col-md-6">
+                        <figure><svg id="evolution1"></svg></figure>
+                    </div>
+                <!--<div>-->
+                    <!--<figure>-->
+                        <!--<svg id="histogram" class="single-histogram-only" width="500"></svg>-->
+                        <div id = "histogram" class="single-histogram-only"></div>
                         <table id="histogram-table" class="table table-condensed" class="single-histogram-only">
                             <thead>
-                                <tr>
-                                    <th>Start</th>
-                                    <th>End</th>
-                                    <th>Count</th>
-                                </tr>
+                            <tr>
+                                <th>Start</th>
+                                <th>End</th>
+                                <th>Count</th>
+                            </tr>
                             </thead>
                             <tbody></tbody>
                         </table>
-                    </figure>
-                </div>
+                    <!--</figure>-->
+                <!--</div>-->
             </div>
-            <aside class="col-md-4 page-end">
+
+         <!--</div>-->
+
+            <!--</div>-->
+            <!--</div>-->
+            <aside class="col-md-3 page-end">
                 <h2>Legend</h2>
                 <span id="info" class="legend">please hover the graph</span>
                 <div id="legend"></div>
@@ -221,6 +234,8 @@
                     <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
                 </div>
             </aside>
+        </div>
+
         </div>
     </section>
     <div id="spinner" class="col-md-12">

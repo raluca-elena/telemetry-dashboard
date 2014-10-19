@@ -41,11 +41,14 @@ header h1 {
 }
 
 #histogram {
-  height:       400px;
+  height:       500px;
 }
 
 #evolution {
   height:       500px;
+}
+#evolution1 {
+    height:       500px;
 }
 
 #histogram-table{

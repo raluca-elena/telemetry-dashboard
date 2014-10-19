@@ -415,6 +415,7 @@ function syncStateWithFirst() {
 
 //construct selector and set selected aggregates
 function setAggregateSelectorOptions(options, changeCb, defaultToAll) {
+  console.log("options is ", options);
   if (options.length === 0) {
     return;
   }
@@ -839,7 +840,7 @@ function renderHistogramGraph(hgram) {
     data: HG,
     chart_type: 'histogram',
     width: 1000,
-    height: 389,
+    height: 589,
     left:40,
     y_scale_type: y_scale_type,
     target: '#histogram',
@@ -967,7 +968,7 @@ function update(hgramEvos) {
     }
   }
 
-  updateDisabledAggregates();
+ // updateDisabledAggregates();
 
   // Add a show-<kind> class to #content
   $("#content").removeClass('show-linear show-exponential');
@@ -1054,7 +1055,7 @@ function update(hgramEvos) {
 
   nv.addGraph(function () {
     //top was 10
-    var focusChart = evolutionchart().margin({
+    /*var focusChart = evolutionchart().margin({
       top: 10,
       right: 80,
       bottom: 40,
@@ -1070,12 +1071,40 @@ function update(hgramEvos) {
     focusChart.y1Axis.tickFormat(fmt);
     focusChart.y2Axis.tickFormat(fmt);
     focusChart.y3Axis.tickFormat(fmt);
-    focusChart.y4Axis.tickFormat(fmt);
+    focusChart.y4Axis.tickFormat(fmt);*/
 
     // Fix nvd3 bug: addGraph called on a non-empty svg breaks tooltips.
     // Clear the svg to avoid this.
+    function formatData(x){
+      for (var i = 0; i < x.length; i++) {
+        x[i].x = new Date(x[i].x)
+      }
+      console.log("X is ----> ", x);
+      return x;
+    }
+    console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ", cDatas);
+    var mozzData1 = [];
+    var mozzData2 = [];
+    var i1 = 0;
+    var i2 = 0;
+    for (var i = 0; i < cDatas.length; i++) {
+
+      console.log("title is ", cDatas[i].title);
+      if (cDatas[i].title === "Submissions") {
+        mozzData1[i1] = formatData(cDatas[i].values);
+        i1++;
+      } else {
+        console.log("************************", cDatas[i].values);
+        mozzData2[i2] = formatData(cDatas[i].values);
+        i2++;
+      }
+      console.log("DATA---------------  ",mozzData2);
+    }
+    //console.log("MOZDATA looks like ", mozzData);
+    console.log();
+
     $("#evolution").empty();
-    d3.select("#evolution").datum(cDatas).call(focusChart);
+    /*d3.select("#evolution").datum(cDatas).call(focusChart);
     nv.utils.windowResize(function () { focusChart.update(); });
     focusChart.setSelectionChangeCallback(updateProps);
 
@@ -1084,7 +1113,79 @@ function update(hgramEvos) {
     setAggregateSelectorOptions(labels, function () {
       updateDisabledAggregates();
       focusChart.update();
-    }, true);
+    }, true);*/
+
+    //////
+    if (mozzData2.length !== 0) {
+      console.log("@@@@@@@@@@@@@@@@@@@ ", mozzData2);
+      moz_chart({
+        title: "Submissions",
+        description: "The number of submissions for the chosen measure.",
+        data: mozzData2,
+        width: 400,
+        height: 400,
+        right: 10,
+        area: false,
+        target: '#evolution',
+        //show_years: show_years,
+        //markers: markers,
+        y_extended_ticks: true,
+        //x_label: x_label,
+        xax_tick: 0,
+        xax_count: 4,
+        x_accessor: 'x',
+        y_accessor: 'y',
+        /*xax_format: function(d) {
+         if(global.options['show-evolution-over'] == 'build-ids') {
+         //use build ids instead of dates
+         var df = d3.time.format('%Y%m%d');
+         return df(d);
+         }
+         else if(global.options['show-evolution-over'] == 'calendar-dates') {
+         //use calendar dates instead
+         var df = d3.time.format('%b %d');
+         return df(d);
+         }
+         },
+         custom_line_color_map: customerLineToColorMap(),
+         max_data_size: showing_releases.length*/
+      });
+    }
+
+    //////
+    moz_chart({
+      title: "Submissions",
+      description: "The number of submissions for the chosen measure.",
+      data: mozzData1,
+      width: 400,
+      height: 400,
+      right: 0,
+      area: false,
+      target: '#evolution1',
+      //show_years: show_years,
+      //markers: markers,
+      y_extended_ticks: true,
+      //x_label: x_label,
+      xax_tick: 0,
+      xax_count: 4,
+      x_accessor: 'x',
+      y_accessor: 'y',
+      /*xax_format: function(d) {
+       if(global.options['show-evolution-over'] == 'build-ids') {
+       //use build ids instead of dates
+       var df = d3.time.format('%Y%m%d');
+       return df(d);
+       }
+       else if(global.options['show-evolution-over'] == 'calendar-dates') {
+       //use calendar dates instead
+       var df = d3.time.format('%b %d');
+       return df(d);
+       }
+       },
+       custom_line_color_map: customerLineToColorMap(),
+       max_data_size: showing_releases.length*/
+    });
+
 
     updateUrlHashIfNeeded();
   });
