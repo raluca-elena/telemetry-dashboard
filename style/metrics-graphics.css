@@ -194,6 +194,10 @@ h2.chart_title .fa {
     color: #000000;
 }
 
+.area6-color {
+    fill: #000000;
+}
+
 .line7-color {
     stroke: #0000ff;
 }
@@ -201,6 +205,11 @@ h2.chart_title .fa {
 .line7-legend-color {
     color: #0000ff;
 }
+
+.area7-color {
+    fill: #0000ff;
+}
+
 
 .line8-color {
     stroke: #00ff33;
@@ -210,6 +219,11 @@ h2.chart_title .fa {
     color: #00ff33;
 }
 
+.area8-color {
+    fill: #00ff33;
+}
+
+
 .line9-color {
     stroke: #660066;
 }
@@ -218,12 +232,21 @@ h2.chart_title .fa {
     color: #660066;
 }
 
+.area9-color {
+    fill: #660066;
+}
+
+
 .line10-color {
     stroke: #3366ff;
 }
 
 .line10-legend-color {
     color: #3366ff;
+}
+
+.area10-color {
+    fill: #3366ff;
 }
 
 .line11-color {
@@ -234,12 +257,21 @@ h2.chart_title .fa {
     color: #cc0099;
 }
 
+.area11-color {
+    fill: #cc0099;
+}
+
+
 .line12-color {
     stroke: #99ff33;
 }
 
 .line12-legend-color {
     color: #99ff33;
+}
+
+.area12-color {
+    fill: #99ff33;
 }
 
 .line13-color {
@@ -250,6 +282,9 @@ h2.chart_title .fa {
     color: #ffcc00;
 }
 
+.area13-color {
+    fill: #ffcc00;
+}
 
 .line1-legend-color {
     color: #4040e8;
