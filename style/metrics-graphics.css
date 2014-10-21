@@ -186,6 +186,71 @@ h2.chart_title .fa {
     stroke: #5c5c5c;
 }
 
+.line6-color {
+    stroke: #000000;
+}
+
+.line6-legend-color {
+    color: #000000;
+}
+
+.line7-color {
+    stroke: #0000ff;
+}
+
+.line7-legend-color {
+    color: #0000ff;
+}
+
+.line8-color {
+    stroke: #00ff33;
+}
+
+.line8-legend-color {
+    color: #00ff33;
+}
+
+.line9-color {
+    stroke: #660066;
+}
+
+.line9-legend-color {
+    color: #660066;
+}
+
+.line10-color {
+    stroke: #3366ff;
+}
+
+.line10-legend-color {
+    color: #3366ff;
+}
+
+.line11-color {
+    stroke: #cc0099;
+}
+
+.line11-legend-color {
+    color: #cc0099;
+}
+
+.line12-color {
+    stroke: #99ff33;
+}
+
+.line12-legend-color {
+    color: #99ff33;
+}
+
+.line13-color {
+    stroke: #ffcc00;
+}
+
+.line13-legend-color {
+    color: #ffcc00;
+}
+
+
 .line1-legend-color {
     color: #4040e8;
 }
