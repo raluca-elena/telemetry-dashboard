@@ -1118,6 +1118,10 @@ function update(hgramEvos) {
     //////
     if (mozzData2.length !== 0) {
       console.log("@@@@@@@@@@@@@@@@@@@ ", mozzData2);
+      document.getElementById("evolution1").style.display="block";
+      $( "#evolution1" ).addClass( "col-md-6" );
+      $( "#evolution" ).addClass( "col-md-6" );
+
       moz_chart({
         title: "Submissions",
         description: "The number of submissions for the chosen measure.",
@@ -1150,42 +1154,80 @@ function update(hgramEvos) {
          custom_line_color_map: customerLineToColorMap(),
          max_data_size: showing_releases.length*/
       });
+
+
+      //////
+      moz_chart({
+        title: "Submissions",
+        description: "The number of submissions for the chosen measure.",
+        data: mozzData1,
+        width: 400,
+        height: 400,
+        right: 0,
+        area: false,
+        target: '#evolution',
+        //show_years: show_years,
+        //markers: markers,
+        y_extended_ticks: true,
+        //x_label: x_label,
+        xax_tick: 0,
+        xax_count: 4,
+        x_accessor: 'x',
+        y_accessor: 'y',
+        /*xax_format: function(d) {
+         if(global.options['show-evolution-over'] == 'build-ids') {
+         //use build ids instead of dates
+         var df = d3.time.format('%Y%m%d');
+         return df(d);
+         }
+         else if(global.options['show-evolution-over'] == 'calendar-dates') {
+         //use calendar dates instead
+         var df = d3.time.format('%b %d');
+         return df(d);
+         }
+         },
+         custom_line_color_map: customerLineToColorMap(),
+         max_data_size: showing_releases.length*/
+      });
+    } else {
+      document.getElementById("evolution1").style.display="none";
+      $( "#evolution" ).removeClass( "col-md-6" );
+      //$( "#evolution" ).addClass( "col-md-6" );
+
+      moz_chart({
+        title: "Submissions",
+        description: "The number of submissions for the chosen measure.",
+        data: mozzData1,
+        width: 700,
+        height: 400,
+        right: 0,
+        area: false,
+        target: '#evolution',
+        //show_years: show_years,
+        //markers: markers,
+        y_extended_ticks: true,
+        //x_label: x_label,
+        xax_tick: 0,
+        xax_count: 4,
+        x_accessor: 'x',
+        y_accessor: 'y',
+        /*xax_format: function(d) {
+         if(global.options['show-evolution-over'] == 'build-ids') {
+         //use build ids instead of dates
+         var df = d3.time.format('%Y%m%d');
+         return df(d);
+         }
+         else if(global.options['show-evolution-over'] == 'calendar-dates') {
+         //use calendar dates instead
+         var df = d3.time.format('%b %d');
+         return df(d);
+         }
+         },
+         custom_line_color_map: customerLineToColorMap(),
+         max_data_size: showing_releases.length*/
+      });
+
     }
-
-    //////
-    moz_chart({
-      title: "Submissions",
-      description: "The number of submissions for the chosen measure.",
-      data: mozzData1,
-      width: 400,
-      height: 400,
-      right: 0,
-      area: false,
-      target: '#evolution',
-      //show_years: show_years,
-      //markers: markers,
-      y_extended_ticks: true,
-      //x_label: x_label,
-      xax_tick: 0,
-      xax_count: 4,
-      x_accessor: 'x',
-      y_accessor: 'y',
-      /*xax_format: function(d) {
-       if(global.options['show-evolution-over'] == 'build-ids') {
-       //use build ids instead of dates
-       var df = d3.time.format('%Y%m%d');
-       return df(d);
-       }
-       else if(global.options['show-evolution-over'] == 'calendar-dates') {
-       //use calendar dates instead
-       var df = d3.time.format('%b %d');
-       return df(d);
-       }
-       },
-       custom_line_color_map: customerLineToColorMap(),
-       max_data_size: showing_releases.length*/
-    });
-
 
     updateUrlHashIfNeeded();
   });
