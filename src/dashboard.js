@@ -1123,7 +1123,7 @@ function update(hgramEvos) {
       $( "#evolution" ).addClass( "col-md-6" );
 
       moz_chart({
-        title: "Submissions",
+        title: "Percentiles",
         description: "The number of submissions for the chosen measure.",
         data: mozzData2,
         width: 400,
