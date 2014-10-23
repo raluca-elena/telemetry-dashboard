@@ -52,17 +52,19 @@
         <div>
         <div id="content" class="row">
             <div class="col-md-8">
-                <!--<div>-->
+                <div>
                     <h2 id="measure">Measure</h2>
                     <i id="description">Description</i>
                     <div id="evolution">
                     <!--<figure style="margin: 15px;"><svg id="evolution"></svg></figure>-->
                         <!--<svg id="evolution"></svg>-->
                     </div>
-                    <div id="evolution1" >
+                    <div id="evolution2">
                         <!--<figure><svg id="evolution1"></svg></figure>-->
-                        <!--<svg id="evolution1"></svg>-->
+                        <svg id="evolution1"></svg>
+
                     </div>
+
                 <!--<div>-->
                     <!--<figure>-->
                         <!--<svg id="histogram" class="single-histogram-only" width="500"></svg>-->
@@ -78,7 +80,7 @@
                             <tbody></tbody>
                         </table>
                     <!--</figure>-->
-                <!--</div>-->
+                </div>
             </div>
 
          <!--</div>-->
@@ -88,7 +90,11 @@
             <aside class="col-md-3 page-end">
                 <h2>Legend</h2>
                 <span id="info" class="legend">please hover the graph</span>
-                <div id="legend"></div>
+
+                <div id="legend" class="legend">
+                    <div id="legend1"></div>
+                    <div id="legend2"></div>
+                </div>
                 <h2>Preferences</h2>
                 <form role="form">
                     <div class="form-group">
@@ -188,7 +194,6 @@
                 <h2>Links</h2>
                 <h4>More Dashboards</h4>
                 <ul>
-                  <!-- Please add new entries here in alphabetical order. -->
                     <li> <a href="http://mozilla.github.io/iacomus/resources/public/index.html#?config=https://s3-us-west-2.amazonaws.com/telemetry-public-analysis/addon_perf/data/addon-perf.json">
                                                                                         Add-on Bootstrap Performance     </a> </li>
                     <li> <a href="hang/bhr">                                            Background Hang Reporting (BHR)  </a> </li>
@@ -215,7 +220,6 @@
                     </li>
                 </ul>
                 <h2>Updates</h2>
-                <!-- Twitter widget -->
                 <div>
                     <a class="twitter-timeline"
                         href="https://twitter.com/MozTelemetry"

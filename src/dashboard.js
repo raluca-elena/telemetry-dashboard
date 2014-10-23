@@ -1117,20 +1117,25 @@ function update(hgramEvos) {
 
     //////
     if (mozzData2.length !== 0) {
+
       console.log("@@@@@@@@@@@@@@@@@@@ ", mozzData2);
-      document.getElementById("evolution1").style.display="block";
-      $( "#evolution1" ).addClass( "col-md-6" );
+      document.getElementById("evolution2").style.display="block";
+      document.getElementById("evolution").style.display="block";
+
+      $( "#evolution2" ).addClass( "col-md-6" );
       $( "#evolution" ).addClass( "col-md-6" );
 
       moz_chart({
         title: "Percentiles",
         description: "The number of submissions for the chosen measure.",
         data: mozzData2,
+        legend: ['xyz','Line 1'],
+        legend_target: '#legend1',
         width: 400,
         height: 400,
         right: 10,
         area: false,
-        target: '#evolution1',
+        target: '#evolution2',
         //show_years: show_years,
         //markers: markers,
         y_extended_ticks: true,
@@ -1138,21 +1143,7 @@ function update(hgramEvos) {
         xax_tick: 0,
         xax_count: 4,
         x_accessor: 'x',
-        y_accessor: 'y',
-        /*xax_format: function(d) {
-         if(global.options['show-evolution-over'] == 'build-ids') {
-         //use build ids instead of dates
-         var df = d3.time.format('%Y%m%d');
-         return df(d);
-         }
-         else if(global.options['show-evolution-over'] == 'calendar-dates') {
-         //use calendar dates instead
-         var df = d3.time.format('%b %d');
-         return df(d);
-         }
-         },
-         custom_line_color_map: customerLineToColorMap(),
-         max_data_size: showing_releases.length*/
+        y_accessor: 'y'
       });
 
 
@@ -1161,6 +1152,8 @@ function update(hgramEvos) {
         title: "Submissions",
         description: "The number of submissions for the chosen measure.",
         data: mozzData1,
+        legend: ['aaa','Line 1'],
+        legend_target: '#legend2',
         width: 400,
         height: 400,
         right: 0,
@@ -1173,35 +1166,23 @@ function update(hgramEvos) {
         xax_tick: 0,
         xax_count: 4,
         x_accessor: 'x',
-        y_accessor: 'y',
-        /*xax_format: function(d) {
-         if(global.options['show-evolution-over'] == 'build-ids') {
-         //use build ids instead of dates
-         var df = d3.time.format('%Y%m%d');
-         return df(d);
-         }
-         else if(global.options['show-evolution-over'] == 'calendar-dates') {
-         //use calendar dates instead
-         var df = d3.time.format('%b %d');
-         return df(d);
-         }
-         },
-         custom_line_color_map: customerLineToColorMap(),
-         max_data_size: showing_releases.length*/
+        y_accessor: 'y'
       });
     } else {
-      document.getElementById("evolution1").style.display="none";
+      document.getElementById("evolution2").style.display="none";
       $( "#evolution" ).removeClass( "col-md-6" );
       //$( "#evolution" ).addClass( "col-md-6" );
-
+      console.log("ONE CHART ONLY");
       moz_chart({
         title: "Submissions",
         description: "The number of submissions for the chosen measure.",
+        legend: ['Line 2','Line 1'],
+        legend_target: '#legend1',
         data: mozzData1,
         width: 700,
         height: 400,
         right: 0,
-        area: false,
+        ///area: false,
         target: '#evolution',
         //show_years: show_years,
         //markers: markers,
@@ -1210,22 +1191,23 @@ function update(hgramEvos) {
         xax_tick: 0,
         xax_count: 4,
         x_accessor: 'x',
-        y_accessor: 'y',
-        /*xax_format: function(d) {
-         if(global.options['show-evolution-over'] == 'build-ids') {
-         //use build ids instead of dates
-         var df = d3.time.format('%Y%m%d');
-         return df(d);
-         }
-         else if(global.options['show-evolution-over'] == 'calendar-dates') {
-         //use calendar dates instead
-         var df = d3.time.format('%b %d');
-         return df(d);
-         }
-         },
-         custom_line_color_map: customerLineToColorMap(),
-         max_data_size: showing_releases.length*/
+        y_accessor: 'y'
       });
+
+      //add a multi-line chart
+     /* moz_chart({
+        title:"Multi-line Chart",
+        description: "Try",
+        legend: ['Line 2', "kldsjfljfls"],
+        legend_target: '#lg123',
+        data: data,
+        width: torso.width,
+        height: torso.height,
+        right: torso.right,
+        target: '#fake_users2',
+        x_accessor: 'date',
+        y_accessor: 'value'
+      })*/
 
     }
 
