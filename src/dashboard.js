@@ -1126,8 +1126,8 @@ function update(hgramEvos) {
       $( "#evolution" ).addClass( "col-md-6" );
 
       moz_chart({
-        title: "Percentiles",
-        description: "The number of submissions for the chosen measure.",
+        title: "Percentiles" ,
+        description: "Percentiles",
         data: mozzData2,
         legend: ['xyz','Line 1'],
         legend_target: '#legend1',
