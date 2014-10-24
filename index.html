@@ -9,14 +9,14 @@
           href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet"
           href="//netdna.bootstrapcdn.com/font-awesome/4.0.2/css/font-awesome.min.css">
-    <link rel="stylesheet" href="lib/nv.d3.css">
+    <!--<link rel="stylesheet" href="lib/nv.d3.css">-->
     <link rel="stylesheet" href="lib/bootstrap-select.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="style/dashboard.css">
     <link rel="stylesheet" href="style/select2.css">
 
-    <link rel="stylesheet" href="style/metrics-graphics-demo.css">
-    <link rel="stylesheet" href="style/metrics-graphics-darkness.css">
+    <!--<link rel="stylesheet" href="style/metrics-graphics-demo.css">
+    <link rel="stylesheet" href="style/metrics-graphics-darkness.css">-->
     <link rel="stylesheet" href="style/metrics-graphics.css">
     
     <script>
@@ -55,40 +55,23 @@
                 <div>
                     <!--<h2 id="measure">Measure</h2>
                     <i id="description">Description</i>-->
-                    <div id="evolution">
-                    <!--<figure style="margin: 15px;"><svg id="evolution"></svg></figure>-->
-                        <!--<svg id="evolution"></svg>-->
-                    </div>
-                    <div id="evolution2">
-                        <!--<figure><svg id="evolution1"></svg></figure>-->
-                        <svg id="evolution1"></svg>
-
-                    </div>
-
-                <!--<div>-->
-                    <!--<figure>-->
-                        <!--<svg id="histogram" class="single-histogram-only" width="500"></svg>-->
-                        <div id = "histogram" class="single-histogram-only"></div>
+                    <div id="submissions"></div>
+                    <div id="percentiles"></div>
+                    <div id = "histogram" class="single-histogram-only"></div>
                     <div class="col-md-8">
-                    <table id="histogram-table" class="table table-condensed" class="single-histogram-only">
+                        <table id="histogram-table" class="table table-condensed" class="single-histogram-only">
                             <thead>
-                            <tr>
-                                <th>Start</th>
-                                <th>End</th>
-                                <th>Count</th>
-                            </tr>
+                                <tr>
+                                    <th>Start</th>
+                                    <th>End</th>
+                                    <th>Count</th>
+                                </tr>
                             </thead>
-                            <tbody></tbody>
+                        <tbody></tbody>
                         </table>
                     </div>
-                    <!--</figure>-->
                 </div>
             </div>
-
-         <!--</div>-->
-
-            <!--</div>-->
-            <!--</div>-->
             <aside class="col-md-3 page-end">
                 <h2>Legend</h2>
                 <span id="info" class="legend">please hover the graph</span>
@@ -254,14 +237,14 @@
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
     <script src="lib/bootstrap-select.min.js"></script>
 
-    <script src="lib/d3.js"></script>
-    <script src="lib/nv.d3.js"></script>
+    <script src="lib/d3.min.js"></script>
+    <!--<script src="lib/nv.d3.js"></script>-->
     <script type="text/javascript" src="lib/bootstrap-multiselect.js"></script>
     <link rel="stylesheet" href="style/bootstrap-multiselect.css" type="text/css"/>
 
     <!-- nvd3 chart hacks -->
-    <script src="src/evolutionchart.js"></script>
-    <script src="src/histogramchart.js"></script>
+    <!--<script src="src/evolutionchart.js"></script>-->
+    <!--<script src="src/histogramchart.js"></script>-->
 
     <!--
         big.js and telemetry.js from telemetry.mozilla.org

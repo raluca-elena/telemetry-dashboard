@@ -859,7 +859,7 @@ function renderHistogramGraph(hgram) {
     },
     x_accessor: 'x',
     y_accessor: 'val',
-    area:false,
+    //area:false,
     //buffer: 10,
 
     //markers: release_markers
@@ -1053,36 +1053,37 @@ function update(hgramEvos) {
     }, 100);
   }
 
-  nv.addGraph(function () {
+  //nv.addGraph();
+  function f() {
     //top was 10
     /*var focusChart = evolutionchart().margin({
-      top: 10,
-      right: 80,
-      bottom: 40,
-      left: 80
-    });
+     top: 10,
+     right: 80,
+     bottom: 40,
+     left: 80
+     });
 
-    focusChart.xAxis.tickFormat(function (d) {
-      return d3.time.format('%Y/%m/%d')(new Date(d));
-    });
-    focusChart.x2Axis.tickFormat(function (d) {
-      return d3.time.format('%Y/%m/%d')(new Date(d));
-    });
-    focusChart.y1Axis.tickFormat(fmt);
-    focusChart.y2Axis.tickFormat(fmt);
-    focusChart.y3Axis.tickFormat(fmt);
-    focusChart.y4Axis.tickFormat(fmt);*/
+     focusChart.xAxis.tickFormat(function (d) {
+     return d3.time.format('%Y/%m/%d')(new Date(d));
+     });
+     focusChart.x2Axis.tickFormat(function (d) {
+     return d3.time.format('%Y/%m/%d')(new Date(d));
+     });
+     focusChart.y1Axis.tickFormat(fmt);
+     focusChart.y2Axis.tickFormat(fmt);
+     focusChart.y3Axis.tickFormat(fmt);
+     focusChart.y4Axis.tickFormat(fmt);*/
 
     // Fix nvd3 bug: addGraph called on a non-empty svg breaks tooltips.
     // Clear the svg to avoid this.
-    function formatData(x){
+    function formatData(x) {
       for (var i = 0; i < x.length; i++) {
         x[i].x = new Date(x[i].x)
       }
       console.log("X is ----> ", x);
       return x;
     }
-    console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ", cDatas);
+
     var mozzData1 = [];
     var mozzData2 = [];
     var i1 = 0;
@@ -1094,126 +1095,84 @@ function update(hgramEvos) {
         mozzData1[i1] = formatData(cDatas[i].values);
         i1++;
       } else {
-        console.log("************************", cDatas[i].values);
         mozzData2[i2] = formatData(cDatas[i].values);
         i2++;
       }
-      console.log("DATA---------------  ",mozzData2);
     }
-    //console.log("MOZDATA looks like ", mozzData);
-    console.log();
 
-    $("#evolution").empty();
-    /*d3.select("#evolution").datum(cDatas).call(focusChart);
-    nv.utils.windowResize(function () { focusChart.update(); });
-    focusChart.setSelectionChangeCallback(updateProps);
+    $("#submissions").empty();
+    $("#percentiles").empty();
 
-    labels = unique(labels);
-
-    setAggregateSelectorOptions(labels, function () {
-      updateDisabledAggregates();
-      focusChart.update();
-    }, true);*/
-
-    //////
     if (mozzData2.length !== 0) {
 
-      console.log("@@@@@@@@@@@@@@@@@@@ ", mozzData2);
-      document.getElementById("evolution2").style.display="block";
-      document.getElementById("evolution").style.display="block";
+      document.getElementById("submissions").style.display = "block";
+      document.getElementById("percentiles").style.display = "block";
 
-      $( "#evolution2" ).addClass( "col-md-6" );
-      $( "#evolution" ).addClass( "col-md-6" );
+
+      $("#submissions").addClass("col-md-6");
+      $("#percentiles").addClass("col-md-6");
 
       moz_chart({
-        title: "Percentiles" ,
+        title: "Percentiles",
         description: "Percentiles",
         data: mozzData2,
-        legend: ['xyz','Line 1'],
+        legend: ['xyz', 'Line 1'],
         legend_target: '#legend1',
         width: 400,
         height: 400,
         right: 10,
         area: false,
-        target: '#evolution2',
-        //show_years: show_years,
-        //markers: markers,
-        y_extended_ticks: true,
-        //x_label: x_label,
-        xax_tick: 0,
+        target: '#percentiles',
+        xax_tick: 4,
         xax_count: 4,
         x_accessor: 'x',
         y_accessor: 'y'
       });
 
-
-      //////
       moz_chart({
         title: "Submissions",
         description: "The number of submissions for the chosen measure.",
         data: mozzData1,
-        legend: ['aaa','Line 1'],
+        legend: ['aaa', 'Line 1'],
         legend_target: '#legend2',
         width: 400,
         height: 400,
         right: 0,
         area: false,
-        target: '#evolution',
-        //show_years: show_years,
-        //markers: markers,
-        y_extended_ticks: true,
-        //x_label: x_label,
-        xax_tick: 0,
+        target: '#submissions',
+        xax_tick: 4,
         xax_count: 4,
         x_accessor: 'x',
         y_accessor: 'y'
       });
     } else {
-      document.getElementById("evolution2").style.display="none";
-      $( "#evolution" ).removeClass( "col-md-6" );
-      //$( "#evolution" ).addClass( "col-md-6" );
+      document.getElementById("percentiles").style.display = "none";
+      $("#submissions").removeClass("col-md-6");
       console.log("ONE CHART ONLY");
       moz_chart({
         title: "Submissions",
         description: "The number of submissions for the chosen measure.",
-        legend: ['Line 2','Line 1'],
+        legend: ['Line 2', 'Line 1'],
         legend_target: '#legend1',
         data: mozzData1,
         width: 700,
         height: 400,
         right: 0,
-        ///area: false,
-        target: '#evolution',
-        //show_years: show_years,
-        //markers: markers,
-        y_extended_ticks: true,
-        //x_label: x_label,
-        xax_tick: 0,
+        area: false,
+        target: '#submissions',
+        //y_extended_ticks: true,
+        xax_tick: 4,
         xax_count: 4,
         x_accessor: 'x',
         y_accessor: 'y'
       });
 
-      //add a multi-line chart
-     /* moz_chart({
-        title:"Multi-line Chart",
-        description: "Try",
-        legend: ['Line 2', "kldsjfljfls"],
-        legend_target: '#lg123',
-        data: data,
-        width: torso.width,
-        height: torso.height,
-        right: torso.right,
-        target: '#fake_users2',
-        x_accessor: 'date',
-        y_accessor: 'value'
-      })*/
-
     }
 
     updateUrlHashIfNeeded();
-  });
-
+    //});
+  }
+  f();
   updateProps();
 }
 
