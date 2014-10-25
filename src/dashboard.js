@@ -830,6 +830,8 @@ function renderHistogramGraph(hgram) {
     return chart;
   });*/
 
+
+
   var xax_count = (hgram._spec.kind == 'flag' || hgram._spec.kind == 'boolean')
     ? 2
     : 10;
@@ -1053,7 +1055,6 @@ function update(hgramEvos) {
     }, 100);
   }
 
-  //nv.addGraph();
   function f() {
     //top was 10
     /*var focusChart = evolutionchart().margin({
@@ -1078,9 +1079,8 @@ function update(hgramEvos) {
     // Clear the svg to avoid this.
     function formatData(x) {
       for (var i = 0; i < x.length; i++) {
-        x[i].x = new Date(x[i].x)
+        x[i].date = new Date(x[i].x);
       }
-      console.log("X is ----> ", x);
       return x;
     }
 
@@ -1104,10 +1104,8 @@ function update(hgramEvos) {
     $("#percentiles").empty();
 
     if (mozzData2.length !== 0) {
-
       document.getElementById("submissions").style.display = "block";
       document.getElementById("percentiles").style.display = "block";
-
 
       $("#submissions").addClass("col-md-6");
       $("#percentiles").addClass("col-md-6");
@@ -1125,7 +1123,7 @@ function update(hgramEvos) {
         target: '#percentiles',
         xax_tick: 4,
         xax_count: 4,
-        x_accessor: 'x',
+        x_accessor: 'date',
         y_accessor: 'y'
       });
 
@@ -1142,7 +1140,7 @@ function update(hgramEvos) {
         target: '#submissions',
         xax_tick: 4,
         xax_count: 4,
-        x_accessor: 'x',
+        x_accessor: 'date',
         y_accessor: 'y'
       });
     } else {
@@ -1160,17 +1158,15 @@ function update(hgramEvos) {
         right: 0,
         area: false,
         target: '#submissions',
-        //y_extended_ticks: true,
         xax_tick: 4,
         xax_count: 4,
-        x_accessor: 'x',
+        x_accessor: 'date',
         y_accessor: 'y'
       });
 
     }
 
     updateUrlHashIfNeeded();
-    //});
   }
   f();
   updateProps();
