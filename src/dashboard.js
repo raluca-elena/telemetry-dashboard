@@ -1116,6 +1116,10 @@ function update(hgramEvos) {
 
     $("#submissions").empty();
     $("#percentiles").empty();
+    $("#legend1").empty();
+    $("#legend2").empty();
+
+
 
     if (mozzData2.length !== 0) {
       document.getElementById("submissions").style.display = "block";
