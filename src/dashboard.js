@@ -764,16 +764,14 @@ function renderHistogramTable(hgram) {
 
 function renderHistogramGraph(hgram) {
 
-  console.log("datele care intra in histograma veche :" , hgram);
+  //console.log("datele care intra in histograma veche :" , hgram);
   var HG = [];
   for (var i = 0; i < hgram._buckets.length; i++) {
-    console.log("^^^^^^^qqqqqqqqqqqqqqq", hgram._buckets[i]);
+    //console.log("^^^^^^^qqqqqqqqqqqqqqq", hgram._buckets[i]);
     //HG.push({'x' : hgram._buckets[i], 'val' : hgram._aggregated[i]});
     HG.push({'x' : i, 'val' : hgram._aggregated[i]});
 
   }
-  console.log("***************datele care intra in histograma noua", HG);
-  console.log("HISTOGRAM TYPE -------------------", hgram._spec.kind);
 
   //if histogram is exponential, use log scale
   var y_scale_type = (hgram._spec.kind == 'exponential')
@@ -841,7 +839,7 @@ function renderHistogramGraph(hgram) {
     description: "This is a simple line chart. You can remove the area portion by adding area: false to the arguments list.",
     data: HG,
     chart_type: 'histogram',
-    width: 1000,
+    width: 980,
     height: 589,
     left:40,
     y_scale_type: y_scale_type,
@@ -1096,10 +1094,21 @@ function update(hgramEvos) {
       //console.log("title is ", cDatas[i].title);
       if (cDatas[i].title === "Submissions") {
         mozzData1[i1] = formatData(cDatas[i].values);
+        //mozzData1[i1].xxx = cDatas[i].key;
+        for (var j = 0; j < mozzData1[i1].length; j++) {
+          mozzData1[i1][j].name = cDatas[i].key;
+        }
+        console.log("@@@@@@@@@@@@@@@@@@@@@", mozzData1[i1].xxx);
+        console.log("!!!!!!!!!!!!!!!!!!!!!", mozzData1[i1]);
+
+
         l1.push(cDatas[i].key.split(":")[0]);
         i1++;
       } else {
         mozzData2[i2] = formatData(cDatas[i].values);
+        for (var j = 0; j < mozzData2[i2].length; j++) {
+          mozzData2[i2][j].name = cDatas[i].key;
+        }
         l2.push(cDatas[i].key.split(":")[0]);
         i2++;
       }
@@ -1115,19 +1124,32 @@ function update(hgramEvos) {
       $("#submissions").addClass("col-md-6");
       $("#percentiles").addClass("col-md-6");
 
+
+      var small = {};
+      small.width = 400;
+      small.height = 400;
+      small.left = 20;
+      small.right = 10;
+      small.top = 0;
+      small.xax_count = 5;
       moz_chart({
         title: "Percentiles",
         description: "Percentiles",
         data: mozzData2,
         legend: l2,
         legend_target: '#legend1',
-        width: 400,
-        height: 400,
-        right: 10,
+        width: small.width,
+        height: small.height,
+        right: small.right,
         area: false,
         target: '#percentiles',
         xax_tick: 4,
         xax_count: 4,
+        rollover_callback: function(d) {
+          //var prefix = d3.formatPrefix(d.value);
+          $('#percentiles svg .active_datapoint')
+            .html( d.name.split(":")[0] +" " + d.name.split(":")[1].split(" ")[1] + "% :" + d.y);
+        },
         x_accessor: 'date',
         y_accessor: 'y'
       });
@@ -1138,33 +1160,52 @@ function update(hgramEvos) {
         data: mozzData1,
         legend: l1,
         legend_target: '#legend2',
-        width: 400,
-        height: 400,
-        right: 0,
+        width: small.width,
+        height: small.height,
+        right: small.right,
         area: false,
         target: '#submissions',
         xax_tick: 4,
         xax_count: 4,
+        rollover_callback: function(d) {
+          //var prefix = d3.formatPrefix(d.value);
+          $('#submissions svg .active_datapoint')
+            .html(d.name.split(":")[0] + ": " + d.y);
+        },
         x_accessor: 'date',
         y_accessor: 'y'
       });
     } else {
       document.getElementById("percentiles").style.display = "none";
       $("#submissions").removeClass("col-md-6");
-      console.log("ONE CHART ONLY");
+      var small = {};
+      small.width = 700;
+      small.height = 400;
+      small.left = 20;
+      small.right = 20;
+      small.top = 0;
+      small.xax_count = 5;
+
       moz_chart({
         title: "Submissions",
         description: "The number of submissions for the chosen measure.",
         legend: l1,
         legend_target: '#legend1',
         data: mozzData1,
-        width: 700,
-        height: 400,
-        right: 0,
+        width: small.width,
+        height: small.height,
+        right: small.right,
+        //top: small.top,
         area: false,
         target: '#submissions',
         xax_tick: 4,
         xax_count: 4,
+        rollover_callback: function(d) {
+          //var prefix = d3.formatPrefix(d.value);
+
+          $('#submissions svg .active_datapoint')
+            .html(d.name.split(":")[0] + ": " + d.y);
+        },
         x_accessor: 'date',
         y_accessor: 'y'
       });
