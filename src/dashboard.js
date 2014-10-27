@@ -1088,14 +1088,19 @@ function update(hgramEvos) {
     var mozzData2 = [];
     var i1 = 0;
     var i2 = 0;
-    for (var i = 0; i < cDatas.length; i++) {
+    var l1 = [];
+    var l2 = [];
 
-      console.log("title is ", cDatas[i].title);
+    for (var i = 0; i < cDatas.length; i++) {
+      console.log("element is -----", cDatas[i].key);
+      //console.log("title is ", cDatas[i].title);
       if (cDatas[i].title === "Submissions") {
         mozzData1[i1] = formatData(cDatas[i].values);
+        l1.push(cDatas[i].key.split(":")[0]);
         i1++;
       } else {
         mozzData2[i2] = formatData(cDatas[i].values);
+        l2.push(cDatas[i].key.split(":")[0]);
         i2++;
       }
     }
@@ -1114,7 +1119,7 @@ function update(hgramEvos) {
         title: "Percentiles",
         description: "Percentiles",
         data: mozzData2,
-        legend: ['xyz', 'Line 1'],
+        legend: l2,
         legend_target: '#legend1',
         width: 400,
         height: 400,
@@ -1131,7 +1136,7 @@ function update(hgramEvos) {
         title: "Submissions",
         description: "The number of submissions for the chosen measure.",
         data: mozzData1,
-        legend: ['aaa', 'Line 1'],
+        legend: l1,
         legend_target: '#legend2',
         width: 400,
         height: 400,
@@ -1150,7 +1155,7 @@ function update(hgramEvos) {
       moz_chart({
         title: "Submissions",
         description: "The number of submissions for the chosen measure.",
-        legend: ['Line 2', 'Line 1'],
+        legend: l1,
         legend_target: '#legend1',
         data: mozzData1,
         width: 700,
