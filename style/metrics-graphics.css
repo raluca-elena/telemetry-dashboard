@@ -12,7 +12,7 @@ a:hover {
 .active_datapoint {
     fill: black;
     font-size: 11px;
-    font-weight: 400;
+    font-weight: 500;
 }
 
 .area1-color {
@@ -195,6 +195,9 @@ circle {
 .legend {
     font-size: 11px;
     padding: 25px 0 15px 0;
+    text-overflow: ellipsis;
+    /*white-space: nowrap;
+    overflow: hidden;*/
 }
 
 .main-area-solid svg .main-area {

@@ -1118,6 +1118,7 @@ function update(hgramEvos) {
     $("#percentiles").empty();
     $("#legend1").empty();
     $("#legend2").empty();
+    $("#xxx").empty();
 
 
 
@@ -1150,9 +1151,8 @@ function update(hgramEvos) {
         xax_tick: 4,
         xax_count: 4,
         rollover_callback: function(d) {
-          //var prefix = d3.formatPrefix(d.value);
-          $('#percentiles svg .active_datapoint')
-            .html( d.name.split(":")[0] +" " + d.name.split(":")[1].split(" ")[1] + "% :" + d.y);
+          $('#xxx').text( " " + d.name.split(":")[0] + "  " + d.name.split(":")[1] + ": " + d3.round(d.y) + "  "  + d.date.toDateString());
+          console.log("d is ", d);
         },
         x_accessor: 'date',
         y_accessor: 'y'
@@ -1172,9 +1172,7 @@ function update(hgramEvos) {
         xax_tick: 4,
         xax_count: 4,
         rollover_callback: function(d) {
-          //var prefix = d3.formatPrefix(d.value);
-          $('#submissions svg .active_datapoint')
-            .html(d.name.split(":")[0] + ": " + d.y);
+          $('#xxx').text( " " + d.name.split(":")[0] + "  " + d.name.split(":")[1] + ": " + d3.round(d.y) + "  "  + d.date.toDateString());
         },
         x_accessor: 'date',
         y_accessor: 'y'
@@ -1205,10 +1203,9 @@ function update(hgramEvos) {
         xax_tick: 4,
         xax_count: 4,
         rollover_callback: function(d) {
-          //var prefix = d3.formatPrefix(d.value);
+          //$('#submissions svg .active_datapoint')
+          $('#xxx').text( " " + d.name.split(":")[0] + "  " + d.name.split(":")[1] + ": " + d3.round(d.y) + "  "  + d.date.toDateString());
 
-          $('#submissions svg .active_datapoint')
-            .html(d.name.split(":")[0] + ": " + d.y);
         },
         x_accessor: 'date',
         y_accessor: 'y'
