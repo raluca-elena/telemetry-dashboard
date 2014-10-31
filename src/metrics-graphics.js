@@ -1265,6 +1265,7 @@ charts.line = function(args) {
     }
 
     this.rolloverOff = function(args) {
+        console.log("-----hack for long rollover text------");
         var svg = d3.select(args.target + ' svg');
 
         return function(d, i) {
@@ -1291,6 +1292,8 @@ charts.line = function(args) {
 
             svg.select('.active_datapoint')
                 .text('');
+            $("#xxx").empty();
+            $("#xxx").text("please hover the graph..");
         }
     }
 
