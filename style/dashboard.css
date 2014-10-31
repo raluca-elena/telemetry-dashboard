@@ -132,3 +132,12 @@ header h1 {
     color:black;
     font-weight:bold
 }
+
+.extended-tooltip {
+
+    border: 1px solid #a1a1a1;
+    padding: 10px 20px;
+    height: 60px;
+    border-radius: 20px;
+    box-shadow: 5px 5px 5px #888888;
+}
